@@ -1,234 +1,152 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rega</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f9f9f9;
-        }
-        .container {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            margin-bottom: 20px;
-            align-items: center;
-            width: 75%;
-        }
-        .columns {
-            display: flex;
-            justify-content: space-around;
-            width: 120%;
-        }
-        .column {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        input {
-            width: 80px;
-            padding: 5px;
-            margin-top: 5px;
-            text-align: center;
-            font-size: 16px;
-        }
-        .keyboard {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 20px;
-            width: 90%;
-        }
-        .key {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 60px;
-            background-color: #f0f0f0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 20px;
-            cursor: pointer;
-        }
-        .key:active {
-            background-color: #ddd;
-        }
-        #result-box {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            width: 90%;
-            text-align: center;
-            font-weight: bold;
-            background-color: #fff;
-        }
-        .action-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 10px;
-            width: 90%;
-        }
-        .action-buttons button {
-            padding: 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            text-align: center;
-        }
-        .action-buttons button:active {
-            background-color: #0056b3;
-        }
-        .screenshot-button button {
-            background-color: #28a745;
-        }
-        .screenshot-button button:active {
-            background-color: #218838;
-        }
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/html2canvas"></script>
+  <meta charset="UTF-8">
+  <title>Windguru Forecast – Прогноз вітру</title>
+
+  <meta name="description" content="Прогноз вітру та погоди з Windguru. Перемикання мов UA / PT.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      color: #111;
+    }
+
+    header {
+      background: #0f172a;
+      color: #fff;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 18px;
+      margin: 0;
+    }
+
+    main {
+      padding: 24px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 16px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    /* Toggle */
+    .lang-toggle {
+      display: flex;
+      background: #1e293b;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid #334155;
+    }
+
+    .lang-toggle button {
+      padding: 6px 14px;
+      border: none;
+      background: transparent;
+      color: #cbd5f5;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .lang-toggle button.active {
+      background: #38bdf8;
+      color: #000;
+    }
+  </style>
 </head>
 <body>
-    <div class="cleanslate w24tz-current-time w24tz-small" style="display: inline-block !important; visibility: hidden !important; min-width:200px !important; min-height:100px !important;"><p><a href="//24timezones.com/Lisboa/horas" style="text-decoration: none" class="clock24" id="tz24-1757837122-c1133-eyJob3VydHlwZSI6IjI0Iiwic2hvd2RhdGUiOiIxIiwic2hvd3NlY29uZHMiOiIxIiwiY29udGFpbmVyX2lkIjoiY2xvY2tfYmxvY2tfY2I2OGM2Nzc0MjhiNTFhIiwidHlwZSI6ImRiIiwibGFuZyI6InB0In0=" title="hora atual Lisboa" target="_blank" rel="nofollow"></a></p><div id="clock_block_cb68c677428b51a"></div></div>
-<script type="text/javascript" src="//w.24timezones.com/l.js" async></script>
-    <div class="container">
-        <!-- VALVULA -->
-        <div class="column">
-            <label for="col0">VALVULA</label>
-            <input type="number" id="col0" placeholder=" - " readonly>
-        </div>
-        <!-- células -->
-        <div class="columns">
-            <div class="column">
-                <label for="col1">Entrada</label>
-                <input type="number" id="col1" placeholder=" - " readonly>
-            </div>
-            <div class="column">
-                <label for="col2">Saida</label>
-                <input type="number" id="col2" placeholder=" - " readonly>
-            </div>
-            <div class="column">
-                <label for="col3">Vasos</label>
-                <input type="number" id="col3" placeholder=" - " readonly>
-            </div>
-        </div>
-    </div>
-    <div id="result-box"> Introduza os dados </div>
 
-    <div class="keyboard">
-        <!-- Keyboard -->
-        <div class="key" onclick="addNumber(1)">1</div>
-        <div class="key" onclick="addNumber(2)">2</div>
-        <div class="key" onclick="addNumber(3)">3</div>
-        <div class="key" onclick="addNumber(4)">4</div>
-        <div class="key" onclick="addNumber(5)">5</div>
-        <div class="key" onclick="addNumber(6)">6</div>
-        <div class="key" onclick="addNumber(7)">7</div>
-        <div class="key" onclick="addNumber(8)">8</div>
-        <div class="key" onclick="addNumber(9)">9</div>
-        <div class="key" onclick="clearAll()">C</div>
-        <div class="key" onclick="addNumber(0)">0</div>
-        <div class="key" onclick="deleteLast()">⌫</div>
-    </div>
+<header>
+  <h1>Windguru Forecast</h1>
 
-    <div class="action-buttons">
-        <button onclick="nextColumn()">Próximo</button>
-        <button id="screenshot-btn" class="screenshot-button">Screenshot</button>
-    </div>
+  <div class="lang-toggle">
+    <button id="btn-ua" onclick="setLanguage('ua')">UA</button>
+    <button id="btn-pt" onclick="setLanguage('pt')">PT</button>
+  </div>
+</header>
 
-    <script>
-        let activeInput = document.getElementById("col0"); 
+<main>
+  <div id="wg-root"></div>
+</main>
 
-        document.querySelectorAll("input").forEach(input => {
-            input.addEventListener("click", () => {
-                activeInput = input;
-            });
-        });
+<footer>
+  © 2026 Wind Forecast · Data by Windguru
+</footer>
 
-        function addNumber(num) {
-            if (activeInput) {
-                activeInput.value += num;
-                checkAndCalculate(); 
-            }
-        }
+<script>
+  function loadWindguru(lang) {
+    // оновлюємо lang у html (SEO)
+    document.documentElement.lang = lang === "ua" ? "uk" : "pt";
 
-        function clearAll() {
-            document.querySelectorAll("input").forEach(input => {
-                input.value = "";
-            });
-            document.getElementById("result-box").textContent = "Resultado: ---";
-            activeInput = document.getElementById("col0");
-            activeInput.focus(); 
-        }
+    // кнопки
+    document.getElementById("btn-ua").classList.toggle("active", lang === "ua");
+    document.getElementById("btn-pt").classList.toggle("active", lang === "pt");
 
-        function deleteLast() {
-            if (activeInput) {
-                activeInput.value = activeInput.value.slice(0, -1);
-            }
-        }
+    // зберігаємо мову
+    localStorage.setItem("wg_lang", lang);
 
-        function checkAndCalculate() {
-            const col1 = document.getElementById("col1").value;
-            const col2 = document.getElementById("col2").value;
-            const col3 = document.getElementById("col3").value;
+    // прибрати старий віджет
+    const root = document.getElementById("wg-root");
+    root.innerHTML = "";
 
-            if (col1 && col2 && col3) {
-                calculate();
-            }
-        }
+    // унікальний id (ОБОВʼЯЗКОВО)
+    const uid = "wg_" + lang + "_" + Date.now();
 
-        function calculate() {
-            const col1Value = parseFloat(document.getElementById("col1").value);
-            const col2Value = parseFloat(document.getElementById("col2").value);
-            const col3Value = parseFloat(document.getElementById("col3").value);
+    // створюємо script-заглушку
+    const placeholder = document.createElement("script");
+    placeholder.id = uid;
+    root.appendChild(placeholder);
 
-            if (isNaN(col1Value) || isNaN(col2Value) || isNaN(col3Value) || col1Value === 0 || col3Value === 0) {
-                document.getElementById("result-box").textContent = "ERROR!";
-                return;
-            }
+    // класичний loader Windguru
+    (function (window, document) {
+      var loader = function () {
+        var arg = [
+          "s=159114",
+          "m=3",
+          "mw=84",
+          "uid=" + uid,
+          "wj=kmh",
+          "tj=c",
+          "waj=m",
+          "tij=cm",
+          "odh=0",
+          "doh=24",
+          "fhours=240",
+          "hrsm=1",
+          "vt=forecasts",
+          "lng=" + lang,
+          "ts=2",
+          "p=WINDSPD,GUST,MWINDSPD,SMER,TMPE,TMP,CDC,APCP1s,RH,PERPW,PWEN,HTSGW,RATING"
+        ];
 
-            const result = (col2Value / col1Value / col3Value) * 100;
-            document.getElementById("result-box").textContent = ` ${result.toFixed(2)}%`;
-        }
+        var script = document.createElement("script");
+        var firstScript = document.getElementsByTagName("script")[0];
+        script.src = "https://www.windguru.cz/js/widget.php?" + arg.join("&");
+        firstScript.parentNode.insertBefore(script, firstScript);
+      };
 
-        function nextColumn() {
-            const inputs = ["col0", "col1", "col2", "col3"];
-            const currentIndex = inputs.indexOf(activeInput.id);
-            const nextIndex = (currentIndex + 1) % inputs.length;
-            activeInput = document.getElementById(inputs[nextIndex]);
-            activeInput.focus(); 
-        }
+      loader();
+    })(window, document);
+  }
 
-        document.getElementById("screenshot-btn").addEventListener("click", function () {
-      html2canvas(document.body).then(canvas => {
-        // Створення зображення
-        const imageData = canvas.toDataURL("image/png");
+  function setLanguage(lang) {
+    loadWindguru(lang);
+  }
 
-        // Генерація дати та часу
-        const now = new Date();
-        const timestamp = now.toISOString().replace(/[:.-]/g, "_"); // Формат YYYY-MM-DD_HH_MM_SS
+  // стартова мова
+  const savedLang = localStorage.getItem("wg_lang") || "ua";
+  loadWindguru(savedLang);
+</script>
 
-        // Створення посилання для завантаження
-        const link = document.createElement("a");
-        link.download = `screenshot_${timestamp}.png`; // Ім'я файлу з часом
-        link.href = imageData;
-                link.click();
-            });
-        });
-    </script>
-    
 </body>
 </html>
-
